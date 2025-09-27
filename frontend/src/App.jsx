@@ -155,7 +155,7 @@ function LandingPage({ onJoin }) {
           </form>
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
 
