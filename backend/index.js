@@ -125,6 +125,9 @@ io.on('connection', (socket) => {
     }
   });
 });
+app.get('/' , (req,res) => {
+    res.send("hii biswajit")
+})
 
 const PORT = 3001;
 server.listen(PORT, () => {
