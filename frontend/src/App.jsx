@@ -15,6 +15,30 @@ const extractVideoId = (url) => {
 const socket = io.connect("https://syncvid.onrender.com/");
 
 // ==============================
+// FOOTER COMPONENT
+// ==============================
+function Footer() {
+  const yourName = "Biswajit";
+  const whatsappLink = "https://wa.me/8327522831";
+  const linkedinLink = "https://www.linkedin.com/in/biswajit-bera/";
+
+  return (
+    <footer className="fixed bottom-0 left-0 right-0 p-3 text-center text-gray-400 text-sm bg-gray-900/60 backdrop-blur-sm border-t border-white/10 z-50">
+      <p>
+        Created by <strong className="font-semibold text-gray-200">{yourName}</strong>. Connect via{' '}
+        <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors duration-200">
+          WhatsApp
+        </a> &{' '}
+        <a href={linkedinLink} target="_blank" rel="noopener noreferrer" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors duration-200">
+          LinkedIn
+        </a>.
+      </p>
+    </footer>
+  );
+}
+
+
+// ==============================
 // MAIN APP COMPONENT
 // ==============================
 export default function App() {
@@ -55,11 +79,19 @@ export default function App() {
           }}
         />
         <LandingPage onJoin={handleJoin} />
+        {/* FIX: Footer is now rendered consistently here */}
+        <Footer />
       </>
     );
   }
 
-  return <WatchRoom roomCode={roomCode} initialIsHost={isHost} initialVideoId={initialVideoId} initialParticipants={initialParticipants} />;
+  return (
+    <>
+      <WatchRoom roomCode={roomCode} initialIsHost={isHost} initialVideoId={initialVideoId} initialParticipants={initialParticipants} />
+      {/* FIX: Footer is now rendered consistently here */}
+      <Footer />
+    </>
+  );
 }
 
 
@@ -84,7 +116,8 @@ function LandingPage({ onJoin }) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white p-4 relative overflow-hidden">
+    // FIX: Added pb-16 to create space for the fixed footer below
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white p-4 pb-16 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -161,9 +194,6 @@ function LandingPage({ onJoin }) {
 
 // ==============================
 // WATCH ROOM COMPONENT
-// ==============================
-// ==============================
-// WATCH ROOM COMPONENT (VIDEO SIZE FIXED)
 // ==============================
 function WatchRoom({ roomCode, initialIsHost, initialVideoId, initialParticipants }) {
   const [isHost, setIsHost] = useState(initialIsHost);
@@ -245,7 +275,7 @@ function WatchRoom({ roomCode, initialIsHost, initialVideoId, initialParticipant
       socket.off('updateParticipants');
       socket.off('promoteToHost', handlePromotion);
     };
-  }, [roomCode]);
+  }, [roomCode, isHost]);
 
   const handleLoadVideo = () => {
     const newVideoId = extractVideoId(urlInput);
@@ -316,8 +346,8 @@ function WatchRoom({ roomCode, initialIsHost, initialVideoId, initialParticipant
         }}
       />
       
-      {/* --- KEY FIX 1: Use `min-h-screen` to allow scrolling on mobile --- */}
-      <div className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-sans">
+      {/* FIX: Added pb-16 to the main container to prevent content from being hidden by the footer */}
+      <div className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-sans pb-16">
         {/* Main Content Area */}
         <div className="flex-grow flex flex-col p-4 lg:p-8 space-y-6 min-w-0">
           {/* Enhanced Header */}
@@ -402,7 +432,6 @@ function WatchRoom({ roomCode, initialIsHost, initialVideoId, initialParticipant
             </div>
           )}
           
-          {/* --- KEY FIX 2: Replaced `flex-grow` with `w-full aspect-video` --- */}
           <div className="w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/40 border border-gray-700/50 relative">
             {videoId ? (
               <YouTube
