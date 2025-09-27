@@ -12,7 +12,7 @@ const extractVideoId = (url) => {
 };
 
 // This should be updated for deployment
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect("https://syncvid.onrender.com/");
 
 // ==============================
 // MAIN APP COMPONENT

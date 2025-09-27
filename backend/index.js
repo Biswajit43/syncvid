@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://localhost:5173"], // Your Vite/React dev server
+    origin: ["http://localhost:5173", "https://localhost:5173" , "https://syncplayer.vercel.app"], // Your Vite/React dev server
     methods: ["GET", "POST"],
   },
 });
