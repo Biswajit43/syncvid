@@ -99,11 +99,16 @@ export default function App() {
 // LANDING PAGE COMPONENT
 // ==============================
 function LandingPage({ onJoin }) {
+  const [loading,setloading] =  useState(false);
   const [joinCode, setJoinCode] = useState('');
   const [name, setName] = useState('');
 
-  const handleCreateRoom = () => {
-    if (!name.trim()) { toast.error('Please enter your name!'); return; }
+  const handleCreateRoom = (e) => {
+     e.preventDefault();
+    setloading(true);
+    if (!name.trim()) { toast.error('Please enter your name!');
+                       setloading(false);
+                       return; }
     const newRoomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
     onJoin(newRoomCode, name);
   };
@@ -159,7 +164,7 @@ function LandingPage({ onJoin }) {
             className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-purple-600/30 hover:shadow-purple-600/50 flex items-center justify-center space-x-2"
           >
             <Crown size={20} />
-            <span>Create New Room</span>
+            {loading?<span>Creating New Room</span> : <span>Create New Room</span>}
           </button>
 
           <div className="flex items-center text-gray-400 my-6">
